@@ -14,5 +14,11 @@ export const loginSchema = [
 
 export const otpSchema = [
   body('email').isEmail().withMessage('Valid email required'),
+  body('otp').optional().isLength({ min: 6, max: 6 }).withMessage('OTP must be 6 digits'),
+  validate
+];
+
+export const passwordSchema = [
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
   validate
 ];

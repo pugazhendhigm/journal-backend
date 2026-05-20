@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "db:reset": "node src/database/reset-db.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
@@ -13,7 +14,8 @@
     "express": "^4.18.2",
     "express-validator": "^7.3.1",
     "helmet": "^7.1.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "pg": "^8.13.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"

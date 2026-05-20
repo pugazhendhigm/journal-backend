@@ -1,20 +1,16 @@
-import { supabase } from '../config/supabase.js';
+import { supabaseAdmin } from '../config/supabase.js';
 
-async function checkConnection() {
-  console.log("Checking connection to Supabase...");
+export async function checkDatabaseConnection() {
+  console.log('Checking connection to Supabase...');
 
-  // Try to fetch from the journals table (it should return an empty array [])
-  const { data, error } = await supabase
+  const { error } = await supabaseAdmin
     .from('journals')
-    .select('*')
+    .select('id', { head: true, count: 'exact' })
     .limit(1);
 
   if (error) {
-    console.error("❌ Connection Failed:", error.message);
-  } else {
-    console.log("✅ Success! Connected to Postgres.");
-    console.log("Current Tables Found: journals, profiles");
+    throw new Error(`Supabase connection failed: ${error.message}`);
   }
-}
 
-checkConnection();
+  console.log('Connected to Supabase successfully.');
+}
