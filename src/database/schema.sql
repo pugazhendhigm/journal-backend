@@ -17,10 +17,24 @@ CREATE TABLE IF NOT EXISTS public.journals (
   user_id UUID REFERENCES auth.users NOT NULL,
   content TEXT NOT NULL,
   mood TEXT,
+  tags TEXT[] DEFAULT ARRAY[]::TEXT[],
   metadata JSONB DEFAULT '{}'::jsonb, -- AI Ready: stores tags, sentiment, and summaries
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+ALTER TABLE public.journals
+  ADD COLUMN IF NOT EXISTS tags TEXT[] DEFAULT ARRAY[]::TEXT[];
+
+UPDATE public.journals
+SET tags = COALESCE(
+  (
+    SELECT array_agg(tag_value)
+    FROM jsonb_array_elements_text(COALESCE(metadata->'tags', '[]'::jsonb)) AS tag_value
+  ),
+  ARRAY[]::TEXT[]
+)
+WHERE tags IS NULL OR array_length(tags, 1) IS NULL;
 
 -- 3. ROW LEVEL SECURITY (RLS)
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;

@@ -7,6 +7,7 @@ const router = Router();
 router.use(protect); // All journal routes protected
 
 router.get('/', journalCtrl.getAll);
+router.get('/:id', journalCtrl.getById);
 router.post('/', journalSchema, journalCtrl.create);
 router.put('/:id', journalSchema, journalCtrl.update);
 router.delete('/:id', journalCtrl.remove);

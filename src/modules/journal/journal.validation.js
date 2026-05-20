@@ -10,5 +10,6 @@ export const journalSchema = [
   body('content').notEmpty().trim().withMessage('Journal content cannot be empty'),
   body('mood').optional().isString(),
   body('tags').optional().isArray().withMessage('Tags must be an array'),
+  body('tags.*').optional().isString().trim().withMessage('Each tag must be a string'),
   validate
 ];

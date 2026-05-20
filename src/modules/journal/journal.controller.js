@@ -15,6 +15,13 @@ export const getAll = async (req, res, next) => {
   } catch (e) { next(e); }
 };
 
+export const getById = async (req, res, next) => {
+  try {
+    const journal = await journalService.getJournalById(req.user.id, req.params.id);
+    sendResponse(res, 200, true, journal);
+  } catch (e) { next(e); }
+};
+
 export const update = async (req, res, next) => {
   try {
     const journal = await journalService.updateJournal(req.user.id, req.params.id, req.body);

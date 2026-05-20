@@ -3,9 +3,9 @@ import { sendResponse } from '../../utils/response.js';
 
 export const register = async (req, res, next) => {
   try {
-    const { data, error } = await authService.signUp(req.body.email, req.body.password);
-    if (error) throw error;
-    sendResponse(res, 201, true, data.user, 'Verification OTP sent to email');
+    const result = await authService.signUp(req.body.email, req.body.password);
+    const statusCode = result.pendingVerification ? 202 : 201;
+    sendResponse(res, statusCode, true, result.user, result.message);
   } catch (e) { next(e); }
 };
 
